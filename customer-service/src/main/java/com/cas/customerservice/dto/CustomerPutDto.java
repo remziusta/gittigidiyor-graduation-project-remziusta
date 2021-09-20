@@ -5,11 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -18,13 +16,13 @@ import javax.validation.constraints.Size;
 public class CustomerPutDto {
 
     @ApiModelProperty(example = "Your first name. (Your first names length must be 3 and 30 character and only letter)")
-    @Pattern(regexp = "^[a-zA-Z]*$", message = "Your first name must only be letters.")
+    @Pattern(regexp = "^[\\p{L}]+([(\\s)$]?+[\\p{L}]+)+$", message = "Your first name must only be letters.")
     @Size(min = 3, max = 30, message = "First name must be length 3 and 30 character.")
     @NotBlank(message = "Firstname is mandatory.")
     private String firstName;
 
     @ApiModelProperty(example = "Your last name. (Your last names length must be 2 and 30 character and only letter)")
-    @Pattern(regexp = "^[a-zA-Z]*$", message = "Your last name must only be letters.")
+    @Pattern(regexp = "^[\\p{L}]+([(\\s)$]?+[\\p{L}]+)+$", message = "Your last name must only be letters.")
     @Size(min = 2, max = 30, message = "Last name must be length 2 and 30 character.")
     @NotBlank(message = "Lastname is mandatory.")
     private String lastName;
@@ -36,5 +34,6 @@ public class CustomerPutDto {
 
     @ApiModelProperty(example = "Your monthly income.")
     @NotNull(message = "Monthly income is mandatory")
+    @Range(min = 0, message = "Monthly Income is greater than 0")
     private Integer monthlyIncome;
 }
