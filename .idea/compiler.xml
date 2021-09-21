@@ -7,8 +7,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="customer-service" />
+        <module name="feign-client" />
         <module name="discovery-server" />
+        <module name="customer-service" />
         <module name="score-service" />
       </profile>
     </annotationProcessing>
@@ -16,6 +17,7 @@
       <module name="CAS" target="1.8" />
       <module name="customer-service" target="1.8" />
       <module name="discovery-server" target="1.8" />
+      <module name="feign-client" target="1.8" />
       <module name="score-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
@@ -24,6 +26,7 @@
       <module name="CAS" options="-parameters" />
       <module name="customer-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
+      <module name="feign-client" options="-parameters" />
       <module name="score-service" options="-parameters" />
     </option>
   </component>

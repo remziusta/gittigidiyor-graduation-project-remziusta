@@ -6,6 +6,7 @@
         <option value="$PROJECT_DIR$/discovery-server/pom.xml" />
         <option value="$PROJECT_DIR$/customer-service/pom.xml" />
         <option value="$PROJECT_DIR$/score-service/pom.xml" />
+        <option value="$PROJECT_DIR$/feign-client/pom.xml" />
       </list>
     </option>
   </component>
