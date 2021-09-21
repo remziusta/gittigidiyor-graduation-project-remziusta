@@ -1,6 +1,5 @@
 package com.cas.feignclient.service;
 
-
 import com.cas.feignclient.dto.CustomerDto;
 import com.cas.feignclient.dto.CustomerPutDto;
 import org.springframework.cloud.openfeign.FeignClient;

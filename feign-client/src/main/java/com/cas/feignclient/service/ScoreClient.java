@@ -13,10 +13,10 @@ import javax.validation.Valid;
 @FeignClient(value = "score-service")
 public interface ScoreClient {
 
-    @PostMapping("/newCreditRequest")
+    @PostMapping("/request")
     ResponseEntity<CreditRequestDto> requestCalculation(@RequestBody @Valid CustomerDto customerDto);
 
-    @GetMapping("/sms")
+    @PostMapping("/sms")
     ResponseEntity<String> sendSms(@RequestBody CreditRequestDto creditRequestDto);
 
 }
