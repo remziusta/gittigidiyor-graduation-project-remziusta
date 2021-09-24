@@ -3,11 +3,12 @@ import "antd/dist/antd.css";
 import "./index.css";
 import React, { Component } from "react";
 import { Layout, Menu } from "antd";
-import { Link, Switch, Route,Redirect,Router } from "react-router-dom";
+import { Link, Switch, Route,Redirect } from "react-router-dom";
 import CustomerList from "./component/CustomerList";
 import UpdateCustomer from "./component/UpdateCustomer";
 import AddCustomer from "./component/AddCustomer";
 import RequestNewCustomer from "./component/RequestNewCustomer";
+import GetRequestAll from "./component/GetRequestAll";
 
 const { Header, Content, Footer } = Layout;
 
@@ -26,6 +27,9 @@ export default class App extends Component {
                 </Menu.Item>
                 <Menu.Item key="3">
                   <Link to="/applynewcustomer">Apply credit with Customer</Link>
+                </Menu.Item>
+                <Menu.Item key="4">
+                  <Link to="/searchRequest">Search Request</Link>
                 </Menu.Item>
               </Menu>
             </Header>
@@ -50,6 +54,7 @@ export default class App extends Component {
                     <Route exact path="/addcustomer" component={AddCustomer}/>
                     <Route exact path="/applynewcustomer" component={RequestNewCustomer}/>
                     <Route exact path="/edit" component={UpdateCustomer}/>
+                    <Route exact path="/searchRequest" component={GetRequestAll}></Route>
                   </Switch>
                 </Content>
               </Layout>

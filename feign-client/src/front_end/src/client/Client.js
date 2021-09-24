@@ -59,10 +59,21 @@ export const creditRequestNewCustomer = customer =>
     ).then(checkStatus)
 
 export const creditRequestNationalId = nationalId =>
-    fetch("score/requestCreditNationalId/"+nationalId, {
+    fetch("score/requestCreditByNationalId/"+nationalId, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'POST'
     }
     ).then(checkStatus)
+
+
+export const getRequestByNationalId = nationalId =>
+    fetch("score/getRequestByNationalId/"+nationalId, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'POST'
+    }
+    ).then(checkStatus)
+

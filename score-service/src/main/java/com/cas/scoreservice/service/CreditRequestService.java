@@ -106,4 +106,10 @@ public class CreditRequestService implements BaseService {
         return newRequestDto;
     }
 
+    @Transactional(readOnly = true)
+    public List<CreditRequestDto> getRequestByNationalId(String nationalId){
+        LOGGER.info("Credit request service's getNationalId method is running.");
+        List<CreditRequestDto> myList = mapStructMapperImp.mapFromCreditRequestListToCreditRequestDto(creditRequestRepository.findAllByNationalId(nationalId));
+        return myList;
+    }
 }

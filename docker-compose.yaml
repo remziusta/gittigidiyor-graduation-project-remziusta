@@ -1,0 +1,57 @@
+version: "3.8"
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: rootuser
+      MONGO_INITDB_ROOT_PASSWORD: rootpass
+    ports:
+      - 27017:27017
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=rootuser
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=rootpass
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+  discover-server:
+    image: 'rmzusta/discover-server'
+    container_name: discover-server
+    ports:
+      - 9761:9761
+  customer-service:
+    image: 'rmzusta/customer-service'
+    container_name: customer-service
+    ports:
+      - 9782:9782
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discover-server:9761/eureka/
+      SPRING_DATA_MONGODB_HOST: mongodb
+  score-service:
+    image: 'rmzusta/score-service'
+    container_name: score-service
+    ports:
+      - 9783:9783
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discover-server:9761/eureka/
+      SPRING_DATA_MONGODB_HOST: mongodb
+  feign-client:
+    image: 'rmzusta/feign-client'
+    container_name: feign-client
+    ports:
+        - 9781:9781
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discover-server:9761/eureka/
+volumes:
+  data: {}
+
+networks:
+  mongodb_network:
+    driver: bridge
+  mongodb_net:
+    driver: bridge

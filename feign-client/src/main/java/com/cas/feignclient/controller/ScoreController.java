@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/score")
@@ -31,7 +32,7 @@ public class ScoreController {
     }
 
     @PostMapping("/requestCreditNewCustomer")
-    public ResponseEntity<CreditRequestDto> requestCreditNewCustomer(@RequestBody @Valid CustomerDto customerDto){
+    public ResponseEntity<CreditRequestDto> requestCreditNewCustomer(@RequestBody @Valid CustomerDto customerDto) {
         CustomerDto newCustomer = customerClient.saveCustomer(customerDto).getBody();
 
         CreditRequestDto requestDto = scoreClient.requestCalculation(newCustomer).getBody();
@@ -42,11 +43,11 @@ public class ScoreController {
 
         LOGGER.info("THIS MESSAGE IS SEND BY FEIGN CLIENT : " + message);
 
-        return new ResponseEntity<>(requestDto,HttpStatus.OK);
+        return new ResponseEntity<>(requestDto, HttpStatus.OK);
     }
 
-    @PostMapping("/requestCreditNationalId/{nationalId}")
-    public ResponseEntity<CreditRequestDto> requestCreditNationalId(@PathVariable String nationalId){
+    @PostMapping("/requestCreditByNationalId/{nationalId}")
+    public ResponseEntity<CreditRequestDto> requestCreditNationalId(@PathVariable String nationalId) {
         CustomerDto customerDto = customerClient.findCustomer(nationalId).getBody();
 
         CreditRequestDto requestDto = scoreClient.requestCalculation(customerDto).getBody();
@@ -57,12 +58,16 @@ public class ScoreController {
 
         LOGGER.info("THIS MESSAGE IS SEND BY FEIGN CLIENT : " + message);
 
-        return new ResponseEntity<>(requestDto,HttpStatus.OK);
+        return new ResponseEntity<>(requestDto, HttpStatus.OK);
     }
 
     @PostMapping("/sms")
-    public ResponseEntity<String> sendSms(@RequestBody CreditRequestDto creditRequestDto){
+    public ResponseEntity<String> sendSms(@RequestBody CreditRequestDto creditRequestDto) {
         return scoreClient.sendSms(creditRequestDto);
     }
 
+    @PostMapping("/getRequestByNationalId/{nationalId}")
+    public ResponseEntity<List<CreditRequestDto>> getRequestByNationalId(@PathVariable String nationalId) {
+         return scoreClient.getAllRequestByNationalId(nationalId);
+    }
 }

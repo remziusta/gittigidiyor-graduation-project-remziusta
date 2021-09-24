@@ -3,6 +3,7 @@ import "antd/dist/antd.css";
 import { Form, Input, Button, Row, Col, InputNumber } from "antd";
 import { addNewCustomer } from "../client/Client";
 import { successNotification } from "../client/Notification";
+import { Link } from "react-router-dom";
 
 export default class AddCustomer extends Component {
     
@@ -15,7 +16,8 @@ export default class AddCustomer extends Component {
           `${data.firstName} was added to the system`
         );
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(<Link to="/customer"/>);
   };
   onFinishFailed = () => {};
 

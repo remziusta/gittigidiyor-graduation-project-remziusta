@@ -1,18 +1,17 @@
 import React, { Component } from "react";
-import { Table, Radio, Popconfirm } from "antd";
+import { Table, Button, Popconfirm } from "antd";
 import {
   creditRequestNationalId,
   deleteCustomer,
   getAllCustomers,
 } from "../client/Client";
 import { Link } from "react-router-dom";
-import { successNotification } from "../client/Notification";
+import { successNotification,errorNotification } from "../client/Notification";
 
 export default class CustomerList extends Component {
   constructor(props) {
     super(props);
     this.state = { customers: [] };
-    this.visible = false;
   }
   async componentDidMount() {
     await this.fetchAllCustomer();
@@ -58,10 +57,10 @@ export default class CustomerList extends Component {
             okText="Yes"
             cancelText="No"
           >
-            <Radio.Button value="small">Delete</Radio.Button>
+            <Button value="small">Delete</Button>
           </Popconfirm>
 
-          <Radio.Button value="small">
+          <Button value="small">
             <Link
               to={{
                 pathname: "/edit",
@@ -76,8 +75,8 @@ export default class CustomerList extends Component {
             >
               Edit
             </Link>
-          </Radio.Button>
-          <Radio.Button onClick={() => this.fetchCreditRequestNationalId(customer.nationalId)} value="small">Credit Request</Radio.Button>
+          </Button>
+          <Button onClick={() => this.fetchCreditRequestNationalId(customer.nationalId)} value="small">Credit Request</Button>
         </div>
       ),
     },
@@ -110,7 +109,10 @@ export default class CustomerList extends Component {
           }  `
         );
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>
+      errorNotification(
+        "A error"
+    ));
 
   render() {
     return (
