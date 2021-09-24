@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/customer")
 public class CustomerController {
 
-    CustomerClient customerClient;
+    private CustomerClient customerClient;
 
     private final Logger LOGGER = LogManager.getLogger(CustomerController.class);
 
