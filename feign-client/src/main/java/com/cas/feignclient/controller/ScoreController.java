@@ -68,6 +68,7 @@ public class ScoreController {
 
     @PostMapping("/getRequestByNationalId/{nationalId}")
     public ResponseEntity<List<CreditRequestDto>> getRequestByNationalId(@PathVariable String nationalId) {
-         return scoreClient.getAllRequestByNationalId(nationalId);
+        CustomerDto dto = customerClient.findCustomer(nationalId).getBody();
+        return scoreClient.getAllRequestByNationalId(dto.getNationalId());
     }
 }

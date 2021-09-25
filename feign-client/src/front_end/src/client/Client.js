@@ -77,3 +77,8 @@ export const getRequestByNationalId = nationalId =>
     }
     ).then(checkStatus)
 
+export const decodeMessage = (message) =>{
+    const myArr = message.split('[');
+    const js = JSON.parse('['+myArr[5])
+    return js;
+}

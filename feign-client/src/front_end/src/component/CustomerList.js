@@ -1,12 +1,17 @@
 import React, { Component } from "react";
 import { Table, Button, Popconfirm } from "antd";
+import 'antd-button-color/dist/css/style.css';
+
 import {
   creditRequestNationalId,
   deleteCustomer,
   getAllCustomers,
+  decodeMessage
 } from "../client/Client";
 import { Link } from "react-router-dom";
-import { successNotification,errorNotification } from "../client/Notification";
+import alertify from "alertifyjs";
+import 'alertifyjs/build/css/alertify.css';
+import "../App.css";
 
 export default class CustomerList extends Component {
   constructor(props) {
@@ -57,10 +62,10 @@ export default class CustomerList extends Component {
             okText="Yes"
             cancelText="No"
           >
-            <Button value="small">Delete</Button>
+            <Button type="danger" style={{marginRight:"5px"}} value="small">Delete</Button>
           </Popconfirm>
 
-          <Button value="small">
+          <Button type="info" style={{marginRight:"5px"}} value="small">
             <Link
               to={{
                 pathname: "/edit",
@@ -76,7 +81,8 @@ export default class CustomerList extends Component {
               Edit
             </Link>
           </Button>
-          <Button onClick={() => this.fetchCreditRequestNationalId(customer.nationalId)} value="small">Credit Request</Button>
+          
+          <Button type="success" onClick={() => this.fetchCreditRequestNationalId(customer.nationalId)} value="small">Credit Request</Button>
         </div>
       ),
     },
@@ -87,18 +93,22 @@ export default class CustomerList extends Component {
       .then((res) => res.json())
       .then((data) => {
         this.setState({ customers: data });
+        alertify.success("All data brought");
       })
       .catch((err) => {
-        console.log(err.response);
+        err.response.json().then((res) => {
+          const decode = decodeMessage(res.message);
+          alertify.error(" \n Error Message : " + decode[0].message);
+        });
       });
 
   fetchCreditRequestNationalId = (nationalId) =>
     creditRequestNationalId(nationalId)
       .then((response) => response.json())
       .then((data) => {
-        successNotification(
-          "Credit Request successfully",
-          `Credit Result for ${data.nationalID} : Credit Request: 
+        alertify.success(
+          "Credit Request successfully" +
+          `Credit Result for ${data.nationalId} : Credit Request: 
           ${
             data.status ? "CONFIRM." : "UNCOMFIRM"
           } ${
@@ -109,10 +119,12 @@ export default class CustomerList extends Component {
           }  `
         );
       })
-      .catch((err) =>
-      errorNotification(
-        "A error"
-    ));
+      .catch((err) => {
+        err.response.json().then((res) => {
+          const decode = decodeMessage(res.message);
+          alertify.error(" \n Error Message : " + decode[0].message);
+        });
+      });
 
   render() {
     return (
@@ -126,12 +138,13 @@ export default class CustomerList extends Component {
 const removeCustomer = (nationalId, callback) => {
   deleteCustomer(nationalId)
     .then(() => {
-      alert("Employee deleted", `Employee with ${nationalId} was deleted`);
+      alertify.success('The customer with this '+nationalId+' ID number has been deleted')
       callback();
     })
     .catch((err) => {
       err.response.json().then((res) => {
-        console.log(res);
+        const decode = decodeMessage(res.message);
+          alertify.error(" \n Error Message : " + decode[0].message);
       });
     });
 };

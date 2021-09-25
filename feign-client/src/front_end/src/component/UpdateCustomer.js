@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import "antd/dist/antd.css";
 import { Form, Input, Button, Row, Col, InputNumber } from "antd";
-import { updateCustomer } from "../client/Client";
-import { successNotification } from "../client/Notification";
+import { updateCustomer, decodeMessage } from "../client/Client";
+import alertify from "alertifyjs";
+import "alertifyjs/build/css/alertify.css";
+import 'antd-button-color/dist/css/style.css';
 
 export default class UpdateCustomer extends Component {
   constructor(props) {
@@ -13,12 +15,14 @@ export default class UpdateCustomer extends Component {
   onFinish = (customer) => {
     updateCustomer(this.state.customerInfo.nationalId, customer)
       .then((data) => {
-        successNotification(
-          "Customer successfully updated",
-          `${customer.firstName} was updated to the system`
-        );
+        alertify.success("Update customer info");
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        err.response.json().then((res) => {
+          const decode = decodeMessage(res.message);
+          alertify.error(" \n Error Message : " + decode[0].message);
+        });
+      });
   };
   onFinishFailed = () => {};
 
@@ -37,7 +41,15 @@ export default class UpdateCustomer extends Component {
                 name="firstName"
                 label="FirstName"
                 rules={[
-                  { required: true, message: "Please enter first name." },
+                  {
+                    required: true,
+                    message: "Please enter first name.",
+                  },
+                  {
+                    pattern:
+                      "^[a-zA-ZıüöşçğİÜÖŞÇĞ]+\\S$|^[a-zA-ZıüöşçğİÜÖŞÇĞ]+?([a-zA-ZıüöşçğİÜÖŞÇĞ]+\\s+[a-zA-ZıüöşçğİÜÖŞÇĞ]+)+$",
+                    message: "Format is wrong",
+                  },
                 ]}
               >
                 <Input
@@ -50,7 +62,17 @@ export default class UpdateCustomer extends Component {
               <Form.Item
                 name="lastName"
                 label="Last Name"
-                rules={[{ required: true, message: "Please enter last name." }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter last name.",
+                  },
+                  {
+                    pattern:
+                      "^[a-zA-ZıüöşçğİÜÖŞÇĞ]+\\S$|^[a-zA-ZıüöşçğİÜÖŞÇĞ]+?([a-zA-ZıüöşçğİÜÖŞÇĞ]+\\s+[a-zA-ZıüöşçğİÜÖŞÇĞ]+)+$",
+                    message: "Format is wrong",
+                  },
+                ]}
               >
                 <Input
                   defaultValue={this.state.customerInfo.lastName}
@@ -70,9 +92,10 @@ export default class UpdateCustomer extends Component {
                     message: "Please enter your phone number.",
                   },
                   {
-                    pattern: "^(05)([0-9]{2})\\s?([0-9]{3})\\s?([0-9]{2})\\s?([0-9]{2})$",
-                    message: "Format is wrong"
-                  }
+                    pattern:
+                      "^(05)([0-9]{2})\\s?([0-9]{3})\\s?([0-9]{2})\\s?([0-9]{2})$",
+                    message: "Format is wrong",
+                  },
                 ]}
               >
                 <Input

@@ -140,8 +140,8 @@
                         https://repo1.maven.org/maven2/com/github/eirslett/frontend-maven-plugin/ -->
                         <version>1.11.2</version>
                         <configuration>
-                            <nodeVersion>v4.6.0</nodeVersion>
                             <workingDirectory>src/front_end</workingDirectory>
+                            <installDirectory>target</installDirectory>
                         </configuration>
                         <executions>
                             <execution>
@@ -173,6 +173,24 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <configuration>
+                            <delimiters>
+                                <delimiter>@</delimiter>
+                            </delimiters>
+                            <useDefaultDelimiters>false</useDefaultDelimiters>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <addResources>false</addResources>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

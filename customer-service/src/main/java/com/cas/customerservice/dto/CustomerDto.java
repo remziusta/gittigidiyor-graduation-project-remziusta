@@ -16,13 +16,13 @@ import javax.validation.constraints.*;
 public class CustomerDto {
 
     @ApiModelProperty(example = "Your first name. (Your first names length must be 3 and 30 character and only letter)")
-    @Pattern(regexp = "^[\\p{L}]+([(\\s)$]?+[\\p{L}]+)+$", message = "Your first name must only be letters.")
+    @Pattern(regexp = "^[a-zA-ZıüöşçğİÜÖŞÇĞ]+\\S$|^[a-zA-ZıüöşçğİÜÖŞÇĞ]+?([a-zA-ZıüöşçğİÜÖŞÇĞ]+\\s+[a-zA-ZıüöşçğİÜÖŞÇĞ]+)+$", message = "Your first name must only be letters.")
     @Size(min = 3, max = 30, message = "First name must be length 3 and 30 character.")
     @NotBlank(message = "Firstname is mandatory.")
     private String firstName;
 
     @ApiModelProperty(example = "Your last name. (Your last names length must be 2 and 30 character and only letter)")
-    @Pattern(regexp = "^[\\p{L}]+([(\\s)$]?+[\\p{L}]+)+$", message = "Your last name must only be letters.")
+    @Pattern(regexp = "^[a-zA-ZıüöşçğİÜÖŞÇĞ]+\\S$|^[a-zA-ZıüöşçğİÜÖŞÇĞ]+?([a-zA-ZıüöşçğİÜÖŞÇĞ]+\\s+[a-zA-ZıüöşçğİÜÖŞÇĞ]+)+$", message = "Your last name must only be letters.")
     @Size(min = 2, max = 30, message = "Last name must be length 2 and 30 character.")
     @NotBlank(message = "Lastname is mandatory.")
     private String lastName;

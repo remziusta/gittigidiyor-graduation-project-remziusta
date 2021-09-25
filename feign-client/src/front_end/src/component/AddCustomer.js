@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import "antd/dist/antd.css";
-import { Form, Input, Button, Row, Col, InputNumber } from "antd";
-import { addNewCustomer } from "../client/Client";
-import { successNotification } from "../client/Notification";
-import { Link } from "react-router-dom";
+import { Form, Input, Button, Row, Col } from "antd";
+import { addNewCustomer, decodeMessage } from "../client/Client";
+import 'alertifyjs/build/css/alertify.css';
+import alertify from "alertifyjs";
+import 'antd-button-color/dist/css/style.css';
 
 export default class AddCustomer extends Component {
     
@@ -11,13 +12,14 @@ export default class AddCustomer extends Component {
     addNewCustomer(customer)
       .then((response) => response.json())
       .then((data) => {
-        successNotification(
-          "Customer successfully added",
-          `${data.firstName} was added to the system`
-        );
+        alertify.success(customer.firstName + ' ' + customer.lastName+' has been added as a new customer.');
       })
-      .catch((err) => console.log(err))
-      .finally(<Link to="/customer"/>);
+      .catch((err) => {
+        err.response.json().then((res) => {
+          const decode = decodeMessage(res.message);
+          alertify.error(" \n Error Message : " + decode[0].message);
+        });
+      });
   };
   onFinishFailed = () => {};
 
@@ -36,7 +38,14 @@ export default class AddCustomer extends Component {
                 name="firstName"
                 label="First Name"
                 rules={[
-                  { required: true, message: "Please enter first name." },
+                  {
+                    required: true,
+                    message: "Please enter first name."
+                  },
+                  {
+                    pattern: "^[a-zA-ZıüöşçğİÜÖŞÇĞ]+\\S$|^[a-zA-ZıüöşçğİÜÖŞÇĞ]+?([a-zA-ZıüöşçğİÜÖŞÇĞ]+\\s+[a-zA-ZıüöşçğİÜÖŞÇĞ]+)+$",
+                    message:"Format is wrong"
+                  }
                 ]}
               >
                 <Input placeholder="Please enter first name." />
@@ -46,7 +55,16 @@ export default class AddCustomer extends Component {
               <Form.Item
                 name="lastName"
                 label="Last Name"
-                rules={[{ required: true, message: "Please enter last name." }]}
+                rules={[
+                    {
+                      required: true,
+                      message: "Please enter last name."
+                    },
+                    {
+                      pattern: "^[a-zA-ZıüöşçğİÜÖŞÇĞ]+\\S$|^[a-zA-ZıüöşçğİÜÖŞÇĞ]+?([a-zA-ZıüöşçğİÜÖŞÇĞ]+\\s+[a-zA-ZıüöşçğİÜÖŞÇĞ]+)+$",
+                      message:"Format is wrong"
+                    }
+                ]}
               >
                 <Input placeholder="Please enter last name." />
               </Form.Item>
@@ -76,14 +94,22 @@ export default class AddCustomer extends Component {
                 name="monthlyIncome"
                 label="Salary"
                 rules={[
-                  { required: true, message: "Please enter your salary." },
+                  { 
+                    required: true, 
+                    message: "Please enter your salary."
+                  },
+                  {
+                    pattern : "^[0-9]+$",
+                    message: "Only number."
+                  }
                 ]}
               >
-                <InputNumber min={1} placeholder="Please enter your salary." />
+                <Input type="number" min={1} placeholder="Please enter your salary." />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
+            <Col span={12}>
             <Form.Item
               name="nationalId"
               label="National Id"
@@ -100,11 +126,12 @@ export default class AddCustomer extends Component {
             >
               <Input placeholder="Please enter national id." />
             </Form.Item>
+            </Col>
           </Row>
           <Row>
             <Col span={12}>
               <Form.Item>
-                <Button type="primary" htmlType="submit">
+                <Button type="warning" htmlType="submit">
                   Add
                 </Button>
               </Form.Item>
