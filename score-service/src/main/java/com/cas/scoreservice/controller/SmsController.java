@@ -12,7 +12,7 @@ public class SmsController {
     @PostMapping("")
     public ResponseEntity<String> sendSms(@RequestBody CreditRequestDto creditRequestDto){
         String status = creditRequestDto.getStatus() ? "onaylandı":"onaylanmadı";
-        if(creditRequestDto.getStatus() == false)
+        if(!creditRequestDto.getStatus())
             return new ResponseEntity<>("Krediniz " + status + ". Lütfen daha sonra tekrar deneyiniz.", HttpStatus.OK);
         return new ResponseEntity<>("Krediniz " + status + ". Belirlenen limitiniz : " + creditRequestDto.getLimit(), HttpStatus.OK );
     }

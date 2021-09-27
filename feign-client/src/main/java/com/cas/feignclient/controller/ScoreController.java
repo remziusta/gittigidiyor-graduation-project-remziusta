@@ -19,9 +19,9 @@ import java.util.List;
 @RequestMapping("/score")
 public class ScoreController {
 
-    ScoreClient scoreClient;
+    private ScoreClient scoreClient;
 
-    CustomerClient customerClient;
+    private CustomerClient customerClient;
 
     private final Logger LOGGER = LogManager.getLogger(ScoreController.class);
 
